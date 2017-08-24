@@ -29,7 +29,26 @@ class Users extends CI_Controller {
                 echo 'failed';
             }
     }
-    //search_photo
+
+    //推荐
+    public function recommend_mod(){
+        $result = $this->users_model->recommend_mod();
+        echo json_encode($result);
+    }
+    //自荐
+    public function self_commend(){
+        $result = $this->users_model->self_commend();
+        for($i = 0;$i<count($result);$i++){
+            $newresult = $this->users_model->self_commendimg($result[$i]->d_id);
+            $result[$i]->imgs = $newresult;
+        }
+        echo json_encode($result);
+    }
+
+
+
+
+    //search_photo摄影
     public function search_photo(){
         $result=$this->users_model->search_photo();
         for($i = 0; $i<count($result);$i++){
@@ -38,6 +57,27 @@ class Users extends CI_Controller {
         }
         echo json_encode($result);
     }
+
+
+     public function search_bao(){
+            $result=$this->users_model->search_bao();
+//            for($i = 0; $i<count($result);$i++){
+//                $newresult=$this->users_model->search_photoimg($result[$i]->cd_id);
+//                $result[$i]->imgs = $newresult;
+//            }
+            echo json_encode($result);
+        }
+
+        public function insert_publish(){
+                $content=$this->input->post('content');
+                $result=$this->users_model->insert_publish($content);
+                if($result){
+                    echo $result;
+                }
+                else{
+                    echo 'failed';
+                }
+        }
 }
 
 
